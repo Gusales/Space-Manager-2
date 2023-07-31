@@ -13,7 +13,6 @@ import { api } from '@/lib/api'
 import { AxiosError } from 'axios'
 import { createCookie } from '@/lib/jsCookie'
 import Input from './Input'
-import { Alert, AlertTitle, AlertDescription } from './ui/alert'
 
 const loginUserSchema = z.object({
   email: z
@@ -75,15 +74,6 @@ export default function LoginForm() {
         const { data } = error.response as ResponseApi
 
         console.log(data.mensage)
-
-        return (
-          <Alert>
-            <AlertTitle>Heads up!</AlertTitle>
-            <AlertDescription>
-              You can add components and dependencies to your app using the cli.
-            </AlertDescription>
-          </Alert>
-        )
       })
   }
 
