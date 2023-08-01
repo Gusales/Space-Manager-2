@@ -1,8 +1,10 @@
+'use client'
+
 import Link from 'next/link'
 
-import { Card } from '@/components/Card'
-
 import { Users, Castle, Clock1, CalendarCheck, Users2 } from 'lucide-react'
+
+import { Card } from '@/components/Card'
 
 export default function Dashboard() {
   return (

@@ -1,20 +1,17 @@
 'use client'
 
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { PulseLoader } from 'react-spinners'
 import { useForm } from 'react-hook-form'
 
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { AxiosError } from 'axios'
 import { Eye, EyeOff } from 'lucide-react'
 
-import { api } from '@/lib/api'
-import { createCookie } from '@/lib/jsCookie'
 import Input from './Input'
+import { AuthContext } from '@/contexts/AuthContext'
 
 const loginUserSchema = z.object({
   email: z
@@ -26,16 +23,12 @@ const loginUserSchema = z.object({
 
 type LoginUserData = z.infer<typeof loginUserSchema>
 
-type ResponseApi = {
-  data: {
-    mensage: string
-  }
-}
-
 export default function LoginForm() {
   const [err, setErr] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+
+  const { signIn } = useContext(AuthContext)
 
   const {
     register,
@@ -45,41 +38,13 @@ export default function LoginForm() {
     resolver: zodResolver(loginUserSchema),
   })
 
-  const router = useRouter()
-
   async function loginUser(data: LoginUserData) {
     setIsLoading(true)
     setErr('')
-    const loginInfo = JSON.stringify(data, null, 2)
 
-    await api
-      .post('/login', loginInfo, {
-        headers: {
-          'Content-Type': 'Application/json',
-        },
-      })
-      .then((response) => response.data)
-      .then((data) => {
-        const { token } = data
-        const cookieExpiresInSeconds = 60 * 60 * 24 * 30 // 1 Mês
-
-        createCookie('token', token, {
-          expires: cookieExpiresInSeconds,
-        })
-        setIsLoading(false)
-
-        // REDIRECIONAR USUÁRIO DE ACORDO COM O TIPO DELE!!!!!!!!
-        // ADMIN
-        router.push('/pages/dashboard')
-        // PROFESSOR router.push('/calendar')
-      })
-      .catch((error: AxiosError) => {
-        setIsLoading(false)
-        const { data } = error.response as ResponseApi
-
-        console.log(data.mensage)
-        setErr(data.mensage)
-      })
+    try {
+      await signIn(data)
+    } catch (error) {}
   }
 
   return (
