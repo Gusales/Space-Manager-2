@@ -9,8 +9,10 @@ import { useRouter } from 'next/navigation'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { api } from '@/lib/api'
 import { AxiosError } from 'axios'
+import { Eye, EyeOff } from 'lucide-react'
+
+import { api } from '@/lib/api'
 import { createCookie } from '@/lib/jsCookie'
 import Input from './Input'
 
@@ -31,6 +33,8 @@ type ResponseApi = {
 }
 
 export default function LoginForm() {
+  const [err, setErr] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
   const {
@@ -45,8 +49,8 @@ export default function LoginForm() {
 
   async function loginUser(data: LoginUserData) {
     setIsLoading(true)
+    setErr('')
     const loginInfo = JSON.stringify(data, null, 2)
-    console.log(process.env.NEXT_PUBLIC_API_URL)
 
     await api
       .post('/login', loginInfo, {
@@ -74,6 +78,7 @@ export default function LoginForm() {
         const { data } = error.response as ResponseApi
 
         console.log(data.mensage)
+        setErr(data.mensage)
       })
   }
 
@@ -101,18 +106,33 @@ export default function LoginForm() {
 
       {/* INPUT DE SENHA */}
 
-      <Input
-        labelText="Senha: "
-        title="password"
-        type="password"
-        {...register('password')}
-      />
+      <div className="relative w-full">
+        <Input
+          labelText="Senha: "
+          title="password"
+          type={showPassword ? 'text' : 'password'}
+          {...register('password')}
+        />
+        <button
+          type="button"
+          className="absolute right-0 top-0 -translate-x-2 translate-y-2"
+          onClick={() => setShowPassword((state) => !state)}
+        >
+          {showPassword ? (
+            <Eye size={24} className="text-gray-600" />
+          ) : (
+            <EyeOff size={24} className="text-gray-600" />
+          )}
+        </button>
+      </div>
 
       {errors.password && (
         <span className="text-base font-bold text-red-600">
           {errors.password.message}
         </span>
       )}
+
+      {err && <span className="text-base font-bold text-red-600">{err}</span>}
 
       <Link
         href="#"
