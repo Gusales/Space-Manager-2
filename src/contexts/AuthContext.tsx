@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation'
 import decode from 'jwt-decode'
 
 import { createCookie, getCookie } from '@/lib/jsCookie'
-import { api } from '@/lib/api'
+import api from '@/lib/api'
 
 interface LoginProps {
   email: string
