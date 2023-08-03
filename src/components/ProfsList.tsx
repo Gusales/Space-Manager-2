@@ -12,7 +12,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -24,6 +23,9 @@ import { getFirstName } from '@/lib/formatName'
 
 import { Skeleton } from './ui/skeleton'
 import AddProf from './adminComponents/AddProf'
+import { PenLine } from 'lucide-react'
+import { DeleteButton } from './buttons/DeleteButton'
+import { UpdateUserDialog } from './adminComponents/UpdateUserDialog'
 
 export default function ProfsList() {
   const [isLoading, setIsLoading] = useState(true)
@@ -54,10 +56,19 @@ export default function ProfsList() {
             )) ||
               users.map((user) => {
                 return (
-                  <CommandItem key={user.id}>
+                  <CommandItem
+                    key={user.id}
+                    className="flex items-center gap-2 bg-green-400"
+                  >
                     <Dialog>
                       <DialogTrigger asChild>
-                        <button>{user.name}</button>
+                        <button className="flex w-full items-center justify-between">
+                          {user.name}
+                          <PenLine
+                            size={20}
+                            className="transition-colors hover:text-green-500"
+                          />
+                        </button>
                       </DialogTrigger>
                       <DialogContent className="sm:max-w-[425px]">
                         <DialogHeader>
@@ -68,15 +79,15 @@ export default function ProfsList() {
                             Faça alterações no perfil desse usuário aqui
                           </DialogDescription>
                         </DialogHeader>
-                        <div className="grid gap-4 py-4">
-                          <div className="grid grid-cols-4 items-center gap-4"></div>
-                          <div className="grid grid-cols-4 items-center gap-4"></div>
-                        </div>
-                        <DialogFooter>
-                          <button type="submit">Save changes</button>
-                        </DialogFooter>
+                        <UpdateUserDialog user={user} />
                       </DialogContent>
                     </Dialog>
+
+                    <DeleteButton
+                      userId={user.id}
+                      isActive={user.isActive}
+                      user={user.name}
+                    />
                   </CommandItem>
                 )
               })}
