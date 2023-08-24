@@ -1,4 +1,9 @@
 import ProfsList from '@/components/ProfsList'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Lista de Professores',
+}
 
 export default function Profs() {
   return (

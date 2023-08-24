@@ -1,13 +1,20 @@
-import { Roboto_Flex as Roboto } from 'next/font/google'
 import { ReactNode } from 'react'
+
+import { Metadata } from 'next'
+import { Roboto_Flex as Roboto } from 'next/font/google'
+
 import Header from '../components/Header'
-import './globals.css'
 import { AuthProvider } from '@/contexts/AuthContext'
+
+import './globals.css'
 
 const roboto = Roboto({ subsets: ['latin'] })
 
-export const metadata = {
-  title: 'Space Manager',
+export const metadata: Metadata = {
+  title: {
+    default: 'Space Manager',
+    template: '%s | Space Manager',
+  },
   description: 'Gerenciador de espaços online',
 }
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 'use client'
 
 import { ReactNode, createContext, useEffect, useState } from 'react'
@@ -15,11 +16,17 @@ interface LoginProps {
   password: string
 }
 
+enum UserActype {
+  ADMIN = 'ADMIN',
+  PROF = 'PROF',
+  COORD = 'COORD',
+}
+
 type UserType = {
   sub: string
   name: string
   email: string
-  actype: number
+  actype: UserActype
 }
 
 interface AuthContextProps {
@@ -76,8 +83,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         const userInfo: UserType = decode(token)
         setUser(userInfo)
+        console.log(userInfo.actype)
+        console.log(UserActype.ADMIN)
 
-        if (userInfo.actype === 1) {
+        if (userInfo.actype === UserActype.ADMIN) {
           router.push('/pages/dashboard')
         } else {
           router.push('/pages/calendar')

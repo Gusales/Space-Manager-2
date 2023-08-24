@@ -58,7 +58,7 @@ export default function ProfsList() {
                 return (
                   <CommandItem
                     key={user.id}
-                    className="flex items-center gap-2 bg-green-400"
+                    className="flex items-center gap-2"
                   >
                     <Dialog>
                       <DialogTrigger asChild>

@@ -6,7 +6,7 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-} from '@radix-ui/react-select'
+} from '../ui/select'
 import { Input } from '../ui/input'
 
 type UpdateUserDialogProps = {
