@@ -10,16 +10,11 @@ import decode from 'jwt-decode'
 
 import { createCookie, getCookie } from '@/lib/jsCookie'
 import api from '@/lib/api'
+import { UserActype } from '@/types/UserType'
 
 interface LoginProps {
   email: string
   password: string
-}
-
-enum UserActype {
-  ADMIN = 'ADMIN',
-  PROF = 'PROF',
-  COORD = 'COORD',
 }
 
 type UserType = {
@@ -87,9 +82,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         console.log(UserActype.ADMIN)
 
         if (userInfo.actype === UserActype.ADMIN) {
-          router.push('/pages/dashboard')
+          router.push('/dashboard')
         } else {
-          router.push('/pages/calendar')
+          router.push('/calendar')
         }
       })
   }

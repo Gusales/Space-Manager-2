@@ -1,5 +1,4 @@
 'use client'
-import { useState, useEffect } from 'react'
 
 import {
   Command,
@@ -17,8 +16,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 
-import api from '@/lib/api'
-import { UserType } from '@/types/UserType'
 import { getFirstName } from '@/lib/formatName'
 
 import { Skeleton } from './ui/skeleton'
@@ -26,20 +23,10 @@ import AddProf from './adminComponents/AddProf'
 import { PenLine } from 'lucide-react'
 import { DeleteButton } from './buttons/DeleteButton'
 import { UpdateUserDialog } from './adminComponents/UpdateUserDialog'
+import { useUser } from '@/hooks/useUser'
 
 export default function ProfsList() {
-  const [isLoading, setIsLoading] = useState(true)
-  const [users, setUsers] = useState<UserType[] | []>([])
-
-  useEffect(() => {
-    api
-      .get('/users')
-      .then((response) => response.data)
-      .then((data) => {
-        setIsLoading(false)
-        setUsers(data)
-      })
-  }, [])
+  const { users, isLoading } = useUser()
 
   return (
     <div className="flex flex-col items-end gap-2">
@@ -54,7 +41,7 @@ export default function ProfsList() {
                 <Skeleton className="h-10 w-full" />
               </div>
             )) ||
-              users.map((user) => {
+              users?.map((user) => {
                 return (
                   <CommandItem
                     key={user.id}
