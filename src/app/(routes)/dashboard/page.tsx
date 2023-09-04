@@ -16,7 +16,7 @@ export default function Dashboard() {
             <Card.Icon icon={Users} />
             <Card.Bottom>
               <Link
-                href="/pages/admin/profs"
+                href="/admin/profs"
                 className="block px-2 py-1 hover:underline"
               >
                 Adicionar Professor
@@ -29,7 +29,7 @@ export default function Dashboard() {
             <Card.Icon icon={Castle} />
             <Card.Bottom>
               <Link
-                href="/pages/admin/profs"
+                href="/admin/profs"
                 className="block px-2 py-1 hover:underline"
               >
                 Adicionar Espaço
@@ -42,7 +42,7 @@ export default function Dashboard() {
             <Card.Icon icon={Clock1} />
             <Card.Bottom>
               <Link
-                href="/pages/admin/profs"
+                href="/admin/profs"
                 className="block px-2 py-1 hover:underline"
               >
                 Adicionar Horário
@@ -55,7 +55,7 @@ export default function Dashboard() {
             <Card.Icon icon={Users2} />
             <Card.Bottom>
               <Link
-                href="/pages/admin/profs"
+                href="/admin/profs"
                 className="block px-2 py-1 hover:underline"
               >
                 Adicionar Turmas
@@ -68,7 +68,7 @@ export default function Dashboard() {
             <Card.Icon icon={CalendarCheck} />
             <Card.Bottom>
               <Link
-                href="/pages/admin/profs"
+                href="/admin/profs"
                 className="block px-2 py-1 hover:underline"
               >
                 Ver reservas

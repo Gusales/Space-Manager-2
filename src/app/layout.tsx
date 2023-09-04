@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 import { Metadata } from 'next'
 import { Roboto_Flex as Roboto } from 'next/font/google'
 
-import Header from '../components/Header'
+import Header from '@/components/Header'
 import { AuthProvider } from '@/contexts/AuthContext'
 
 import './globals.css'
