@@ -17,12 +17,12 @@ export function UserContextProvider({ children }: { children: ReactNode }) {
       .then((response) => response.data)
       .then((data) => {
         setUsers(data)
+        setIsLoading(false)
       })
   }
 
   useEffect(() => {
     getUsers()
-    setIsLoading(false)
   }, [users])
 
   return (

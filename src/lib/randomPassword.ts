@@ -1,4 +1,4 @@
-export function randomPassoword() {
+export function generateRandomPassoword() {
   const charset = [
     'a',
     'b',
@@ -69,7 +69,7 @@ export function randomPassoword() {
     '$',
   ]
   let password = ''
-  for (let index = 0; index < 8; index++) {
+  for (let index = 0; index < 6; index++) {
     password += charset[Math.floor(Math.random() * charset.length)]
   }
 

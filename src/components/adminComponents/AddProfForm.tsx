@@ -3,9 +3,9 @@
 import { useState } from 'react'
 import { Input } from '../ui/input'
 
-import { randomPassoword } from '@/lib/randomPassword'
+import { generateRandomPassoword } from '@/lib/randomPassword'
 
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 
 import {
   createUserSchema,
@@ -22,23 +22,35 @@ import { Label } from '../ui/label'
 import api from '@/lib/api'
 import { useUser } from '@/hooks/useUser'
 import { AxiosError } from 'axios'
-
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+} from '../ui/select'
 export default function AddProfForm() {
-  const [randomPass, setRandomPass] = useState('')
   const [err, setErr] = useState('')
   const { users, setUsers } = useUser()
 
   const {
+    control,
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<CreateUserData>({
     resolver: zodResolver(createUserSchema),
   })
 
   async function createNewUser(data: CreateUserData) {
+    console.log(data)
     await api
-      .post('/users', data)
+      .post('/users', {
+        ...data,
+        password: generateRandomPassoword(),
+      })
       .then((response) => response.data)
       .then((data: UserType) => {
         const newState = users
@@ -52,6 +64,7 @@ export default function AddProfForm() {
           setErr(errorBody.data.mensage)
         }
       })
+    reset()
   }
 
   return (
@@ -97,47 +110,37 @@ export default function AddProfForm() {
         </span>
       )}
 
-      {/* Campo de Senha */}
-      <div>
-        <Label htmlFor="password">Senha:</Label>
-        <div>
-          <Input
-            {...register('password')}
-            placeholder="123456"
-            type="password"
-            id="password"
-            value={randomPass}
-            onChange={(e) => setRandomPass(e.target.value)}
-          />
-          <button
-            type="button"
-            className="px-1 text-sm text-zinc-600 hover:underline"
-            onClick={() => setRandomPass(randomPassoword())}
-          >
-            Gerar senha automática
-          </button>
-        </div>
-      </div>
-      {errors.password && (
-        <span className="text-base font-bold text-red-600">
-          {errors.password.message}
-        </span>
-      )}
-
       {/* Campo de Actype */}
 
       <div>
         <Label htmlFor="actype">Tipo do usuário:</Label>
 
-        <select
-          {...register('actype')}
-          id="actype"
-          className="flex h-10 w-full cursor-pointer appearance-none rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          <option value={UserActype.ADMIN}>{'Administrador(a)'}</option>
-          <option value={UserActype.PROF}>{'Professor(a)'}</option>
-          <option value={UserActype.COORD}>{'Coordenador(a)'}</option>
-        </select>
+        <Controller
+          control={control}
+          name="actype"
+          render={({ field }) => {
+            return (
+              <Select onValueChange={field.onChange} value={field.value}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Selecione o tipo de usuário" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value={UserActype.ADMIN}>
+                      {'Administrador(a)'}
+                    </SelectItem>
+                    <SelectItem value={UserActype.PROF}>
+                      {'Professor(a)'}
+                    </SelectItem>
+                    <SelectItem value={UserActype.COORD}>
+                      {'Coordenador(a)'}
+                    </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            )
+          }}
+        />
       </div>
 
       {errors.actype && (
